@@ -87,6 +87,8 @@ header.app{
   background:var(--bg);display:flex;align-items:center;justify-content:center;opacity:.55;transition:.15s}
 .card:hover .play{opacity:1;background:var(--accent);}
 .card .play svg{width:14px;height:14px;fill:#fff}
+.card.playing{box-shadow:0 0 0 3px var(--c),0 10px 24px rgba(0,0,0,.12);border-color:var(--c);transform:translateY(-2px)}
+.card.playing .play{opacity:1;background:var(--c)}
 .cat-名词{--c:var(--teal)} .cat-动词{--c:var(--terra)} .cat-虚词{--c:var(--gold)} .cat-短语{--c:var(--green)}
 .cat-title.dot-名词 .dot{background:var(--teal)} .cat-title.dot-动词 .dot{background:var(--terra)}
 .cat-title.dot-虚词 .dot{background:var(--gold)} .cat-title.dot-短语 .dot{background:var(--green)}
@@ -160,7 +162,18 @@ function play(path){
   if(!path) return;
   if(cur) cur.pause();
   cur = new Audio(AUDIO_BASE + path);
+  cur.onended = clearPlaying;
   cur.play().catch(e=>console.warn(e));
+  highlightPlaying(path);
+}
+
+function highlightPlaying(path){
+  clearPlaying();
+  const el = document.querySelector(`.card[data-audio="${path}"]`);
+  if(el) el.classList.add('playing');
+}
+function clearPlaying(){
+  document.querySelectorAll('.card.playing').forEach(x=>x.classList.remove('playing'));
 }
 
 function buildSide(){
@@ -217,7 +230,7 @@ function renderLesson(){
     const items = L.entries.filter(e=>e.cat===c);
     html += `<div class="catblock"><div class="cat-title dot-${c}"><span class="dot"></span>${catLabel(c)}<span class="n">${items.length} 词</span></div><div class="grid">`;
     items.forEach((e,i)=>{
-      html += `<div class="card cat-${c}" onclick="play('${e.audio}')">
+      html += `<div class="card cat-${c}" data-audio="${e.audio}" onclick="play('${e.audio}')">
           <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
           <div class="ara">${e.disp}</div>
           <div class="zh">${e.zh||''}</div>
@@ -240,14 +253,15 @@ function playAll(){
   qi=0; nextInQueue();
 }
 function nextInQueue(){
-  if(qi>=queue.length){ return; }
+  if(qi>=queue.length){ clearPlaying(); return; }
   const p = queue[qi++];
   if(cur) cur.pause();
   cur = new Audio(AUDIO_BASE+p);
   cur.onended = ()=> setTimeout(nextInQueue, 350);
   cur.play().catch(()=> setTimeout(nextInQueue,350));
+  highlightPlaying(p);
 }
-function stopAll(){ if(cur) cur.pause(); queue=[]; }
+function stopAll(){ if(cur) cur.pause(); queue=[]; clearPlaying(); }
 
 function onSearch(){
   const q = document.getElementById('q').value.trim().toLowerCase();
