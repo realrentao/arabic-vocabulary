@@ -1,0 +1,29 @@
+# Python scripts / build pipeline (not part of the deployed site)
+*.py
+*.pyc
+__pycache__/
+
+# Logs and temp files
+*.txt
+*.log
+
+# PDF sources
+*.pdf
+
+# ar-SA comparison experiments (separate from main site)
+compare_sa.html
+audio_sa/
+voices*.txt
+
+# Leftover deploy clone from a previous interrupted task
+_deploy/
+
+# Orphaned / archived audio (superseded versions)
+audio/_archive/
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.workbuddy/
