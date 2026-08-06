@@ -15,11 +15,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Prepare minimal site (audio served via jsDelivr CDN)
+        run: |
+          mkdir -p _site
+          cp index.html _site/
+          cp site_data.json data_full.json audio_manifest.json _site/ 2>/dev/null || true
+          touch _site/.nojekyll
+
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./
-          exclude_assets: '.github,.gitignore,*.py,*.log,jsd_test.txt,gh_*.txt,gh_*.txt,ct_test.txt,hdr1.txt,hdr2.txt,hdr1_u.txt,hdr2_u.txt'
+          publish_dir: ./_site
           enable_jekyll: false
           keep_files: false
