@@ -5,6 +5,12 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# DISABLED on purpose: this workflow only copies index.html + 3 JSON files with
+# keep_files:false, which wipes app.js / data/ / audio/ that are deployed manually
+# via the Git Database API to gh-pages. Re-enable ONLY after rewriting the publish
+# step to copy the full generated site (app.js, data/, audio/).
+if: false
+
 permissions:
   contents: write
 
