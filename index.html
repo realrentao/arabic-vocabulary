@@ -159,10 +159,15 @@ const CAT_COLOR = {"名词":"#137a7f","动词":"#c0623f","虚词":"#b8893b","短
 const CAT_LABEL = {"名词":"名词","动词":"动词","虚词":"虚词","短语":"短语"};
 function catLabel(c){ return CAT_LABEL[c] || c; }
 
+function stopPlayback(){
+  if(pendingTimer){ clearTimeout(pendingTimer); pendingTimer = null; }
+  cur.pause();
+  queue = [];
+  clearPlaying();
+}
 function play(path){
   if(!path) return;
-  queue = [];
-  cur.pause();
+  stopPlayback();
   cur.src = AUDIO_BASE + path;
   cur.onended = clearPlaying;
   cur.play().catch(e=>console.warn(e));
@@ -248,9 +253,10 @@ function toggleCat(c){
   renderLesson();
 }
 
-let queue=[], qi=0;
+let queue=[], qi=0, pendingTimer=null;
 function playAll(){
   const L = DATA.find(x=>x.id===activeId); if(!L) return;
+  stopPlayback();
   queue = L.entries.filter(e=>activeCats.has(e.cat) && e.audio).map(e=>e.audio);
   qi=0; nextInQueue();
 }
@@ -259,11 +265,11 @@ function nextInQueue(){
   const p = queue[qi++];
   cur.pause();
   cur.src = AUDIO_BASE+p;
-  cur.onended = ()=> setTimeout(nextInQueue, 350);
-  cur.play().catch(()=> setTimeout(nextInQueue,350));
+  cur.onended = ()=>{ pendingTimer = setTimeout(nextInQueue, 350); };
+  cur.play().catch(()=>{ pendingTimer = setTimeout(nextInQueue,350); });
   highlightPlaying(p);
 }
-function stopAll(){ cur.pause(); queue=[]; clearPlaying(); }
+function stopAll(){ stopPlayback(); }
 
 function onSearch(){
   const q = document.getElementById('q').value.trim().toLowerCase();
