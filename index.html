@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap"></noscript>
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap"></noscript>
 <style>
 :root{
   --bg:#faf6ef; --panel:#ffffff; --line:#ece0c8; --ink:#243447; --muted:#8a7c63;
@@ -25,67 +25,49 @@ body{
     var(--bg);
   color:var(--ink);
 }
-/* subtle arabesque top band */
 .topband{height:6px;background:linear-gradient(90deg,var(--teal),var(--gold),var(--terra),var(--gold),var(--teal));opacity:.85}
-header.app{
-  display:flex;align-items:center;gap:16px;padding:18px 26px 14px;
-  border-bottom:1px solid var(--line);
-}
+header.app{display:flex;align-items:center;gap:16px;padding:18px 26px 14px;border-bottom:1px solid var(--line);}
 .brand{display:flex;flex-direction:column;gap:2px}
 .brand .ar{font-family:"IBM Plex Sans Arabic",system-ui,"Segoe UI",Tahoma,sans-serif;font-size:30px;color:var(--teal);font-weight:700;line-height:1}
 .brand .zh{font-size:18px;font-weight:700;letter-spacing:2px}
 .brand .sub{font-size:12px;color:var(--muted);letter-spacing:1px}
 .spacer{flex:1}
 .search{position:relative}
-.search input{
-  width:260px;padding:10px 14px 10px 38px;border:1px solid var(--line);border-radius:24px;
-  background:var(--panel);font-size:14px;color:var(--ink);outline:none;
-}
+.search input{width:260px;padding:10px 14px 10px 38px;border:1px solid var(--line);border-radius:24px;background:var(--panel);font-size:14px;color:var(--ink);outline:none;}
 .search input:focus{border-color:var(--accent)}
 .search svg{position:absolute;left:13px;top:11px;width:16px;height:16px;fill:var(--muted)}
 .layout{display:flex;height:calc(100% - 6px - 76px)}
-/* sidebar */
-.side{width:300px;flex:0 0 300px;background:var(--panel);border-right:1px solid var(--line);
-  overflow-y:auto;padding:14px 10px 40px}
-.vol{margin:10px 6px 4px;font-size:13px;font-weight:700;color:var(--accent);letter-spacing:1px;
-  display:flex;align-items:center;gap:8px}
+.side{width:300px;flex:0 0 300px;background:var(--panel);border-right:1px solid var(--line);overflow-y:auto;padding:14px 10px 40px}
+.vol{margin:10px 6px 4px;font-size:13px;font-weight:700;color:var(--accent);letter-spacing:1px;display:flex;align-items:center;gap:8px}
 .vol::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--accent2);transform:rotate(45deg)}
-.litem{padding:9px 12px;margin:3px 2px;border-radius:10px;cursor:pointer;font-size:14px;
-  display:flex;justify-content:space-between;align-items:center;color:var(--ink);transition:.15s}
+.litem{padding:9px 12px;margin:3px 2px;border-radius:10px;cursor:pointer;font-size:14px;display:flex;justify-content:space-between;align-items:center;color:var(--ink);transition:.15s}
 .litem:hover{background:#f4ecd9}
 .litem.active{background:var(--teal);color:#fff;box-shadow:var(--shadow)}
 .litem.active .cnt{color:#e7f4f4}
 .litem .cnt{font-size:11px;color:var(--muted);background:#f0e7d3;border-radius:10px;padding:1px 8px}
 .litem.active .cnt{background:rgba(255,255,255,.2)}
-/* main */
 .main{flex:1;overflow-y:auto;padding:22px 30px 60px}
 .lesson-head{display:flex;align-items:center;gap:14px;margin-bottom:6px;flex-wrap:wrap}
 .lesson-head h1{margin:0;font-size:24px;font-weight:700}
 .lesson-head .voltag{font-size:12px;color:#fff;background:var(--gold);border-radius:20px;padding:3px 12px}
 .tools{margin:8px 0 18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:8px 14px;
-  border-radius:20px;cursor:pointer;font-size:13px;display:inline-flex;align-items:center;gap:6px;transition:.15s}
+.btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:8px 14px;border-radius:20px;cursor:pointer;font-size:13px;display:inline-flex;align-items:center;gap:6px;transition:.15s}
 .btn:hover{border-color:var(--accent);color:var(--accent)}
 .btn.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
 .btn.primary:hover{background:#0f676b;color:#fff}
 .chips{display:flex;gap:8px;flex-wrap:wrap}
-.chip{padding:6px 13px;border-radius:18px;font-size:13px;cursor:pointer;border:1px solid var(--line);
-  background:var(--panel);user-select:none}
+.chip{padding:6px 13px;border-radius:18px;font-size:13px;cursor:pointer;border:1px solid var(--line);background:var(--panel);user-select:none}
 .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
-/* category blocks */
 .catblock{margin:18px 0 26px}
 .cat-title{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:16px;font-weight:700}
 .cat-title .dot{width:12px;height:12px;border-radius:50%}
 .cat-title .n{font-size:12px;color:var(--muted);font-weight:400}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;
-  cursor:pointer;transition:.15s;position:relative;overflow:hidden}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;cursor:pointer;transition:.15s;position:relative;overflow:hidden}
 .card:hover{box-shadow:var(--shadow);transform:translateY(-2px);border-color:var(--accent2)}
-.card .ara{font-family:"IBM Plex Sans Arabic",system-ui,"Segoe UI",Tahoma,sans-serif;direction:rtl;text-align:right;
-  font-size:27px;line-height:1.5;color:var(--ink);margin-bottom:6px;word-break:break-word}
+.card .ara{font-family:"IBM Plex Sans Arabic",system-ui,"Segoe UI",Tahoma,sans-serif;direction:rtl;text-align:right;font-size:27px;line-height:1.5;color:var(--ink);margin-bottom:6px;word-break:break-word}
 .card .zh{font-size:14px;color:#5b5040}
-.card .play{position:absolute;top:12px;left:12px;width:30px;height:30px;border-radius:50%;
-  background:var(--bg);display:flex;align-items:center;justify-content:center;opacity:.55;transition:.15s}
+.card .play{position:absolute;top:12px;left:12px;width:30px;height:30px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;opacity:.55;transition:.15s}
 .card:hover .play{opacity:1;background:var(--accent);}
 .card .play svg{width:14px;height:14px;fill:#fff}
 .card.playing{box-shadow:0 0 0 3px var(--c),0 10px 24px rgba(0,0,0,.12);border-color:var(--c);transform:translateY(-2px)}
@@ -95,7 +77,6 @@ header.app{
 .cat-title.dot-虚词 .dot{background:var(--gold)} .cat-title.dot-短语 .dot{background:var(--green)}
 .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c,#ccc)}
 .empty{color:var(--muted);padding:40px;text-align:center}
-/* search results */
 .res-item{display:flex;align-items:center;gap:14px;padding:11px 14px;border-bottom:1px solid var(--line);cursor:pointer}
 .res-item:hover{background:#f6efdf}
 .res-item .ara{font-family:"IBM Plex Sans Arabic",system-ui,"Segoe UI",Tahoma,sans-serif;direction:rtl;font-size:22px;flex:0 0 auto}
@@ -105,7 +86,6 @@ header.app{
 footer{text-align:center;color:var(--muted);font-size:12px;padding:18px}
 .hint{font-size:12px;color:var(--muted);margin:2px 0 0}
 .csum{font-weight:500}.csum b{font-weight:700}.csum .sep,.sep{color:var(--line)}
-/* mobile nav: hamburger + slide-in drawer */
 .side-toggle{display:none;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid var(--line);border-radius:12px;background:var(--panel);cursor:pointer;flex:0 0 auto}
 .side-toggle svg{width:22px;height:22px;fill:var(--ink)}
 .scrim{display:none;position:fixed;inset:0;background:rgba(36,52,71,.45);z-index:40}
@@ -118,8 +98,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:18px}
   .search input{width:118px;padding:9px 12px 9px 34px}
   .side-toggle{display:inline-flex}
   .layout{height:calc(100% - 6px - 62px)}
-  .side{position:fixed;top:0;left:0;bottom:0;width:82%;max-width:330px;z-index:50;
-    transform:translateX(-100%);transition:transform .25s ease;box-shadow:var(--shadow)}
+  .side{position:fixed;top:0;left:0;bottom:0;width:82%;max-width:330px;z-index:50;transform:translateX(-100%);transition:transform .25s ease;box-shadow:var(--shadow)}
   .side.open{transform:translateX(0)}
   .main{padding:16px 14px 56px}
   .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
@@ -150,7 +129,6 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:18px}
 </div>
 <div class="scrim" id="scrim" onclick="closeSide()"></div>
 <footer>阿拉伯语词汇学习站 · 共 <span id="tot"></span> 课</footer>
-<script defer src="data/lessons.js"></script>
 <script defer src="app.js"></script>
 </body>
 </html>
