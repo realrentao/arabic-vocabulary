@@ -10,15 +10,15 @@ const AUDIO_OVERRIDE_BASE = "https://cdn.jsdelivr.net/gh/realrentao/arabic-vocab
 function audioSrc(p){ return (AUDIO_OVERRIDE[p] ? AUDIO_OVERRIDE_BASE : AUDIO_BASE) + p; }
 
 let activeId = null;
-let activeCats = new Set(["名词","动词","虚词","短语"]);
+let activeCats = new Set(["名词","动词","虚词","短语和句子"]);
 let qi = 0, pendingTimer = null, cardEls = [], currentEntries = [];
 let lessonCache = {};   // 已加载课程缓存(避免重复请求)
 let ALL = null;         // 搜索全集(首次搜索时懒加载)
 const cur = new Audio(); cur.preload = "auto";
 const prefetch = new Audio(); prefetch.preload = "auto";  // 提前预取下一音频, 消除连播间隔
 
-const CAT_COLOR = {"名词":"#137a7f","动词":"#c0623f","虚词":"#b8893b","短语":"#5a8a3c"};
-const CAT_LABEL = {"名词":"名词","动词":"动词","虚词":"虚词","短语":"短语"};
+const CAT_COLOR = {"名词":"#137a7f","动词":"#c0623f","虚词":"#b8893b","短语和句子":"#5a8a3c"};
+const CAT_LABEL = {"名词":"名词","动词":"动词","虚词":"虚词","短语和句子":"短语和句子"};
 function catLabel(c){ return CAT_LABEL[c] || c; }
 function titleOf(id){ const m = LESSON_INDEX.find(x=>x.id===id); return m ? (m.title||("第"+m.num+"课")) : id; }
 
@@ -92,18 +92,18 @@ async function renderLesson(){
   if(!L){ main.innerHTML = '<div class="empty">请选择左侧课程</div>'; return; }
   const cc = catCounts(L.entries);
   let chips = "";
-  ["名词","动词","虚词","短语"].forEach(c=>{
+  ["名词","动词","虚词","短语和句子"].forEach(c=>{
     if(cc[c]) chips += `<span class="chip ${activeCats.has(c)?"on":""}" data-c="${c}" onclick="toggleCat('${c}')">${catLabel(c)} ${cc[c]}</span>`;
   });
   let html = `<div class="lesson-head"><h1>${L.title||("第"+L.num+"课")}</h1><span class="voltag">${VOL[L.file]||""}</span></div>`;
-  const catsum = ["名词","动词","虚词","短语"].map(c=>`<span class="csum" style="color:${CAT_COLOR[c]}">${catLabel(c)} <b>${cc[c]||0}</b></span>`).join('<span class="sep">·</span>');
+  const catsum = ["名词","动词","虚词","短语和句子"].map(c=>`<span class="csum" style="color:${CAT_COLOR[c]}">${catLabel(c)} <b>${cc[c]||0}</b></span>`).join('<span class="sep">·</span>');
   html += `<div class="hint">本课文共 ${L.entries.length} 个词条　${catsum}</div>`;
   html += `<div class="tools">
       <button class="btn primary" onclick="playAll()">▶ 播放整课</button>
       <button class="btn" onclick="stopAll()">■ 停止</button>
       <div class="chips">${chips}</div>
     </div>`;
-  ["名词","动词","虚词","短语"].forEach(c=>{
+  ["名词","动词","虚词","短语和句子"].forEach(c=>{
     if(!cc[c] || !activeCats.has(c)) return;
     const items = L.entries.filter(e=>e.cat===c);
     html += `<div class="catblock"><div class="cat-title dot-${c}"><span class="dot"></span>${catLabel(c)}<span class="n">${items.length} 词</span></div><div class="grid">`;
@@ -135,7 +135,7 @@ async function playAll(){
   if(!L) return;
   stopPlayback();
   const order = [];
-  ["名词","动词","虚词","短语"].forEach(c=>{
+  ["名词","动词","虚词","短语和句子"].forEach(c=>{
     if(activeCats.has(c)) L.entries.forEach(e=>{ if(e.cat===c) order.push(e); });
   });
   currentEntries = order;
