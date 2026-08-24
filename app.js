@@ -17,6 +17,48 @@ let ALL = null;         // 搜索全集(首次搜索时懒加载)
 const cur = new Audio(); cur.preload = "auto";
 const prefetch = new Audio(); prefetch.preload = "auto";  // 提前预取下一音频, 消除连播间隔
 
+// ---- 整课音频预热: 渲染课程后, 利用浏览器空闲时间分批预载该课全部音频进 HTTP 缓存,
+//      之后点击任意卡片即时出声(无需再等下载)。 ----
+let warmRefs = [];               // 持有 Audio 引用, 防止 GC 取消进行中的请求
+let warmQueue = [];              // 待预热的音频文件名队列
+let warming = false;             // 是否正在预热
+const warmedLessons = new Set(); // 已预热课程, 切回不重复预热
+const WARM_BATCH = 3;            // 每批并发数(避免占满浏览器连接)
+function warmLessonAudios(L){
+  if(!L || !L.entries || !L.entries.length || warmedLessons.has(L.id)) return;
+  warmedLessons.add(L.id);
+  warmQueue = L.entries.map(e=>e.audio);
+  scheduleWarm();
+}
+function scheduleWarm(){
+  if(warming) return;
+  warming = true;
+  const step = ()=>{
+    if(!warmQueue.length){ warming = false; warmRefs = []; return; }
+    const batch = warmQueue.splice(0, WARM_BATCH);
+    let pending = batch.length;
+    batch.forEach(p=>{
+      const a = new Audio();
+      a.preload = "auto";
+      a.src = audioSrc(p);
+      const onDone = ()=>{
+        a.removeEventListener("canplaythrough", onDone);
+        a.removeEventListener("error", onDone);
+        a.removeEventListener("stalled", onDone);
+        pending--;
+        if(pending===0){ warming = false; warmRefs = []; scheduleWarm(); }
+      };
+      a.addEventListener("canplaythrough", onDone);
+      a.addEventListener("error", onDone);
+      a.addEventListener("stalled", onDone);
+      a.load();
+      warmRefs.push(a);
+    });
+  };
+  if("requestIdleCallback" in window) requestIdleCallback(step, {timeout:1500});
+  else setTimeout(step, 80);
+}
+
 const CAT_COLOR = {"名词":"#137a7f","动词":"#c0623f","虚词":"#b8893b","短语和句子":"#5a8a3c"};
 const CAT_LABEL = {"名词":"名词","动词":"动词","虚词":"虚词","短语和句子":"短语和句子"};
 function catLabel(c){ return CAT_LABEL[c] || c; }
@@ -121,6 +163,8 @@ async function renderLesson(){
   cardEls = Array.from(main.querySelectorAll(".card"));
   // 预取第一课音频, 让首次点击即时出声
   if(L.entries.length) prefetch.src = audioSrc(L.entries[0].audio);
+  // 空闲时预热整课音频, 点击任意卡片即时出声
+  warmLessonAudios(L);
 }
 
 function toggleCat(c){
